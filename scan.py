@@ -26,9 +26,11 @@ for f in list(range(1,page+1)):
 	try:
 		f=str(f)
 		url=link+'/'+f+'/'
+		print url
 		r = requests.get(url)
 		count = 0
 		while (count < len(weblist)):
+		   weblist=re.findall('<h2 class="theme_web_h2">(.*?)</h2>', r.content)
 		   hasil='http://'+weblist[count]
 		   print hasil
 		   file = open(theme+".txt","a") 
