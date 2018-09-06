@@ -7,37 +7,55 @@ _______          ____ ________  ________  ________
 \  \_/   \>    < |   |  /    /    /    /    /    / 
  \_____  /__/\_ \|___| /____/    /____/    /____/  
        \/      \/                                  
-
 Author	: 0x1999
 Date	: 4 September 2018
 Name 	: Themesinfo.com domain extractor
-Usage 	: php $argv[0] [link]
-Ex	: php $argv[0] https://themesinfo.com/betheme-wordpress-template-bq
+Usage 	: php $argv[0] [t/p] [link]
+Ex	: php $argv[0] t https://themesinfo.com/betheme-wordpress-template-bq
 ";
 	die;
 }
-$link=$argv[1];
+$link=$argv[2];
+$opt=$argv[1];
 $url=file_get_contents($link);
-$tp=str_replace(" ", "",ambilKata($url,"Theme Used on:</td><td class=\"theme_td2\">","websites</td>"));
-$tm=str_replace(" ", "",ambilKata($url,"Theme Name:</td><td class=\"theme_td2 text_bold\">","</td></tr><tr><td class=\"theme_td\">"));
-$p=round($tp/24);
-
-echo "
-Link		: $link
-Theme Name	: $tm
-Total Domain	: $tp
-Total Page	: $p
-
-
-
-";
-foreach (range(1,$p) as $d) {
-	ambilDomain($link."/$d/",$tm);
-	echo "\r\n-------------------------------------\r\n";
-	echo "Total Domain : $tp\r\n";
-	echo "Grabbing $tm > $tm.txt\r\n";
-	echo "Page $d - $p Done\r\n";
-	echo "\r\n-------------------------------------\r\n";
+if($opt == "t"){
+	$tp=str_replace(" ", "",ambilKata($url,"Theme Used on:</td><td class=\"theme_td2\">","websites</td>"));
+	$tm=str_replace(" ", "",ambilKata($url,"Theme Name:</td><td class=\"theme_td2 text_bold\">","</td></tr><tr><td class=\"theme_td\">"));
+	$p=round($tp/24);
+	echo "
+	Link		: $link
+	Theme Name	: $tm
+	Total Domain	: $tp
+	Total Page	: $p
+	";
+	foreach (range(1,$p) as $d) {
+		ambilDomain($link."/$d/",$tm);
+		echo "\r\n-------------------------------------\r\n";
+		echo "Total Domain : $tp\r\n";
+		echo "Grabbing $tm > $tm.txt\r\n";
+		echo "Page $d - $p Done\r\n";
+		echo "\r\n-------------------------------------\r\n";
+	}
+}elseif($opt == "p"){
+	$tp=str_replace(" ", "",ambilKata($url,"<span class=\"photo-cnt plugin_title_img\"><span><b>","websites</b>"));
+	$tm=str_replace(" ", "",ambilKata($url,"<title>Free WordPress ","plugin by"));
+	$p=round($tp/24);
+	echo "
+	Link		: $link
+	Plugin Name	: $tm
+	Total Domain	: $tp
+	Total Page	: $p
+	";
+	foreach (range(1,$p) as $d) {
+		ambilDomain($link."/$d/",$tm);
+		echo "\r\n-------------------------------------\r\n";
+		echo "Total Domain : $tp\r\n";
+		echo "Grabbing $tm > $tm.txt\r\n";
+		echo "Page $d - $p Done\r\n";
+		echo "\r\n-------------------------------------\r\n";
+	}
+}else{
+	echo "KONTOL";
 }
 function ambilKata($param, $kata1, $kata2)
 {
