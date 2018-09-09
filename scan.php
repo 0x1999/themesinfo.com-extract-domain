@@ -86,7 +86,7 @@ function ambilDomain($url,$nam)
     curl_close($ch);
     foreach ($urlArray as $value) {
     	$f=fopen("$nam.txt", "a");
-    	fwrite($f, "http://$value\r\n");
+    	fwrite($f, "http://$value/\r\n");
     	fclose($f);
         echo "http://$value\r\n";
     }
